@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Business.Abstract;
-using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
-using Core.Utilities.Results;
+using BusinessAspect.Autofac;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using FluentValidation;
+using Core.Utilities.Results;
 
 namespace Business.Concrete
 {
@@ -27,6 +25,8 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
 
+
+        [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
@@ -34,7 +34,7 @@ namespace Business.Concrete
                 CheckIfProductCountOfCategoryCorrect(product.CategoryId),
                 CheckIfProductNameExists(product.ProductName),
                 CheckIfCategoryLimitExeded()
-                );
+            );
 
             if (result != null)
             {
