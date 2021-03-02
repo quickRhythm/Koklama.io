@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-
 using Castle.DynamicProxy;
 
 namespace Core.Utilities.Interceptors
